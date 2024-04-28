@@ -1,12 +1,12 @@
 import { TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 
-export default function Button({ label, theme, onPress }) {
+export default function Button({ label, theme, onPress, icon }) {
   const backgroundColor = theme === 'primary' ? '#2196F3' : '#9E9E9E';
 
   return (
     <TouchableOpacity style={[styles.button, { backgroundColor }]} onPress={onPress}>
-      <FontAwesome name="picture-o" size={18} color="white" style={styles.buttonIcon} />
+      <FontAwesome name={icon} size={18} color="white" style={styles.buttonIcon} />
       <Text style={styles.buttonLabel}>{label}</Text>
     </TouchableOpacity>
   );

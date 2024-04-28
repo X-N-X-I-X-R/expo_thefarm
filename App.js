@@ -1,80 +1,44 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
-
-import Button from './src/components/Buttons';
-import * as ImagePicker from 'expo-image-picker';
+import { StyleSheet, Text, View } from 'react-native';
+import UploadImage from './src/components/UploadImge';
+import Navbar from './src/screens/Navbar';
+import { Switch } from 'react-native-paper';
 import { useState } from 'react';
-import CircleButton from './src/components/CircleButton';
-import IconButton from './src/components/IconButton';
-import EmojiPicker from './src/components/EmojiPicker';
-import EmojiList from './src/components/EmojiList';
-import EmojiSticker from './src/components/EmojiSticker';
-import ImageViewer from './src/components/ ImageViewers';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack'; // Add this line
+import HomeScreen from './src/screens/HomeScreen';
 
-const PlaceholderImage = require('./assets/background-image.jpeg');
-
+const Stack = createStackNavigator(); // Add this line
 
 export default function App() {
-  const [selectImage, setselectImage] = useState(null);  // image modal state
-  const [showAppOptions, setShowAppOptions] = useState(false); // state for showing the app options modal
-  const [isModalVisible, setIsModalVisible] = useState(false); // state for showing the emoji picker modal
-   const [pickedEmoji, setPickedEmoji] = useState(null); // state for the picked emoji
+  const [darkmode, setdarkmode] = useState(false);
 
-   const onReset = () => {
-    setShowAppOptions(false);
-  };
-    const onAddSticker = () => {
-    setIsModalVisible(true);};
-
-  const onSaveImageAsync = async () => {
-    
-    };
-  const onModalClose = () => {
-    setIsModalVisible(false);
+  const containerStyle = {
+    ...styles.container,
+    backgroundColor: darkmode ? '#fff' : '#000',
   };
 
-  const pickImageAsync = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setselectImage(result.assets[0].uri)
-      setShowAppOptions(true);
-    } else {
-      alert('You did not select any image.');
-    }
+  const titleStyle = {
+    ...styles.title,
+    color: darkmode ? '#000' : '#fff',
   };
 
   return (
-    <View style={styles.container}>
+    <View style={containerStyle}>
+      <Text style={titleStyle}>Upload Image</Text>
       <View style={styles.imageContainer}>
-        <ImageViewer placeholderImageSource={PlaceholderImage} selectedImage={selectImage} />    
-          {pickedEmoji && <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />}
+        <Switch value={darkmode} onValueChange={setdarkmode}>
+          Dark Mode
+        </Switch>
+        <UploadImage />
       </View>
-            {showAppOptions ? (
-        <View style={styles.optionsContainer}>
-          <View style={styles.optionsRow}>
-            <IconButton icon="refresh" label="Reset" onPress={onReset} />
-            <CircleButton onPress={onAddSticker} />
-            <IconButton icon="save-alt" label="Save" onPress={onSaveImageAsync} />
-          </View>
-        </View> 
-      ) : ( 
-
-      <View style={styles.footercontainer}>
-        <Button label="Pick an image" theme="primary" onPress={pickImageAsync} /> 
-        <Button label="use this photo" theme="secondary" onPress={
-          () => setShowAppOptions(true) 
-        } /> 
-      </View>
-
-      )}
-        <EmojiPicker isVisible={isModalVisible} onClose={onModalClose}>
-   <EmojiList onSelect={setPickedEmoji} onCloseModal={onModalClose} />
-      </EmojiPicker>
       <StatusBar style="auto" />
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Navbar" component={Navbar} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </View>
   );
 }
@@ -82,16 +46,20 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#25292e',
     alignItems: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginTop: 50,
   },
   imageContainer: {
     flex: 1,
     paddingTop: 58,
+    paddingHorizontal: 20,
   },
-
   footercontainer: {
-    flex: 1/3,  // the footer should take up 1/3 of the screen
+    flex: 1/3,
     alignItems: 'center',
   },
   optionsContainer: {
@@ -102,5 +70,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
-
 });
