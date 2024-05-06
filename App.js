@@ -1,47 +1,25 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import UploadImage from './src/components/UploadImge';
-import Navbar from './src/screens/Navbar';
-import { Switch } from 'react-native-paper';
-import { useState } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack'; // Add this line
+import { createStackNavigator } from '@react-navigation/stack';
+import LoginScreen from './src/components/Login';
 import HomeScreen from './src/screens/HomeScreen';
+import { StyleSheet } from 'react-native';
 
-const Stack = createStackNavigator(); // Add this line
+const Stack = createStackNavigator();
 
-export default function App() {
-  const [darkmode, setdarkmode] = useState(false);
-
-  const containerStyle = {
-    ...styles.container,
-    backgroundColor: darkmode ? '#fff' : '#000',
-  };
-
-  const titleStyle = {
-    ...styles.title,
-    color: darkmode ? '#000' : '#fff',
-  };
-
+const App = () => {
   return (
-    <View style={containerStyle}>
-      <Text style={titleStyle}>Upload Image</Text>
-      <View style={styles.imageContainer}>
-        <Switch value={darkmode} onValueChange={setdarkmode}>
-          Dark Mode
-        </Switch>
-        <UploadImage />
-      </View>
-      <StatusBar style="auto" />
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Navbar" component={Navbar} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="Login" component={LoginScreen} />
+        {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
+
+export default App;
+
 
 const styles = StyleSheet.create({
   container: {
@@ -59,12 +37,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   footercontainer: {
-    flex: 1/3,
+    flex: 1/4,
     alignItems: 'center',
   },
   optionsContainer: {
     position: 'absolute',
-    bottom: 80,
+    bottom: 90,
   },
   optionsRow: {
     alignItems: 'center',
