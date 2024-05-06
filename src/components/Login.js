@@ -5,12 +5,6 @@ import logoImage from '/Users/elmaliahmac/Documents/Full_stack/expoNativeWeb/the
 import gmailIcon from '../../assets/emojies/google.png';
 import facebookIcon from '../../assets/emojies/facebook.png';
 import twitterIcon from '../../assets/emojies/twitter.png';
-
-
-
-
-
-
 import { useNavigation } from '@react-navigation/native';
 
 const LoginScreen = () => {
@@ -19,21 +13,19 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
 
-
-
-// ...
-
-const handleLogin = async () => {
-  try {
-    const response = await login(username, password);
-    console.log(response);
-    if (response.token) {
-      navigation.navigate('Home');
+  const handleLogin = async () => {
+    try {
+      const response = await login(username, password);
+      console.log('Login response:', response);
+      if (response.access) {
+        navigation.navigate('UploadImage');
+      } else {
+        console.log('No token in response');
+      }
+    } catch (error) {
+      console.error('Login error:', error.response || error.message);
     }
-  } catch (error) {
-    console.error(error.response || error.message);
-  }
-};
+  };
 
   return (
     <View style={styles.container}>
@@ -55,17 +47,17 @@ const handleLogin = async () => {
         onChangeText={setPassword}
         secureTextEntry
       />
-    <View style={styles.rememberView}>
-  <View style={styles.row}>
-    <Switch value={rememberMe} onValueChange={setRememberMe} />
-    <Text>Remember Me</Text>
-  </View>
-  <View style={styles.row}>
-    <Pressable onPress={() => Alert.alert("Forgot Password!")}>
-      <Text>Forgot Password?</Text>
-    </Pressable>
-  </View>
-</View>
+      <View style={styles.rememberView}>
+        <View style={styles.row}>
+          <Switch value={rememberMe} onValueChange={setRememberMe} />
+          <Text>Remember Me</Text>
+        </View>
+        <View style={styles.row}>
+          <Pressable onPress={() => Alert.alert("Forgot Password!")}>
+            <Text>Forgot Password?</Text>
+          </Pressable>
+        </View>
+      </View>
       <Button title="Login" onPress={handleLogin} color="#841584" />
       <Text>OR LOGIN WITH</Text>
       <View style={styles.mediaIcons}>
@@ -82,6 +74,8 @@ const handleLogin = async () => {
     </View>
   );
 };
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

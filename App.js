@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './src/components/Login';
 import HomeScreen from './src/screens/HomeScreen';
 import { StyleSheet } from 'react-native';
+import UploadImage from './src/components/UploadImge';
 
 const Stack = createStackNavigator();
 
@@ -12,7 +13,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={LoginScreen} />
-        {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
+<Stack.Screen name="UploadImage" component={UploadImage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
